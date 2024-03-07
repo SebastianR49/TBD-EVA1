@@ -1,0 +1,105 @@
+MySQL Shell 8.0.35
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > config
+ERROR: Not connected.
+           -> ;
+ERROR: Not connected.
+ MySQL  SQL > \c mc-- root@localhost
+Creating a session to 'root@localhost'
+Please provide the password for 'root@localhost': **********
+Save password for 'root@localhost'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8 (X protocol)
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:33060+ ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| agencia            |
+| information_schema |
+| mysql              |
+| orders             |
+| orders2            |
+| performance_schema |
+| registro           |
+| safe               |
+| sakila             |
+| sys                |
+| tbd_1              |
+| tbd_2              |
+| world              |
++--------------------+
+13 rows in set (0.0282 sec)
+ MySQL  localhost:33060+ ssl  SQL > create database examen_1;
+Query OK, 1 row affected (0.0136 sec)
+ MySQL  localhost:33060+ ssl  SQL > create database examen_1_credit_cards;
+Query OK, 1 row affected (0.0344 sec)
+ MySQL  localhost:33060+ ssl  SQL > use examen_1_credit_cards;
+Default schema set to `examen_1_credit_cards`.
+Fetching global names, object names from `examen_1_credit_cards` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  examen_1_credit_cards  SQL > create table clientes(
+                                                        -> id_clientes int not null auto_increment key,
+                                                        -> nombre varchar(50) not null);
+Query OK, 0 rows affected (0.0450 sec)
+ MySQL  localhost:33060+ ssl  examen_1_credit_cards  SQL > create table bancos(
+                                                        -> id_banco int not null auto_increment key,
+                                                        -> nombre varchar(50) not null);
+Query OK, 0 rows affected (0.0360 sec)
+ MySQL  localhost:33060+ ssl  examen_1_credit_cards  SQL > create table tarjetas(
+                                                        -> id_tarjeta int not null auto_increment key,
+                                                        -> nombre varchar(50) not null);
+Query OK, 0 rows affected (0.0564 sec)
+ MySQL  localhost:33060+ ssl  examen_1_credit_cards  SQL > create table tarjetas_cliente(
+                                                        -> id_cliente int not null auto_increment key,
+                                                        -> card_number varchar(16) not null,
+                                                        -> fecha_emision date not null,
+                                                        -> fecha_corte date not null,
+                                                        -> pin int not null,
+                                                        -> credito float not null,
+                                                        -> ;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 7
+ MySQL  localhost:33060+ ssl  examen_1_credit_cards  SQL > create table tarjetas_cliente( id_t_cliente int not null auto_increment key, card_number varchar(16) not null, fecha_emision date not null, fecha_corte date not null, pin int not null, credito float not null, id_cliente int, id_banco int not null, id_tarjeta int not null,foreign key(id_cliente) references clientes(id_clientes) on delete cascade on update cascade,foreign key(id_banco) references bancos(id_banco) on delete cascade on update cascade,foreign key(id_tarjeta) references tarjetas(id_tarjeta) on delete cascade on update cascade);
+Query OK, 0 rows affected (0.1292 sec)
+ MySQL  localhost:33060+ ssl  examen_1_credit_cards  SQL > show tables;
++---------------------------------+
+| Tables_in_examen_1_credit_cards |
++---------------------------------+
+| bancos                          |
+| clientes                        |
+| tarjetas                        |
+| tarjetas_cliente                |
++---------------------------------+
+4 rows in set (0.0065 sec)
+ MySQL  localhost:33060+ ssl  examen_1_credit_cards  SQL > show create table tarjetas_cliente;
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table            | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| tarjetas_cliente | CREATE TABLE `tarjetas_cliente` (
+  `id_t_cliente` int NOT NULL AUTO_INCREMENT,
+  `card_number` varchar(16) NOT NULL,
+  `fecha_emision` date NOT NULL,
+  `fecha_corte` date NOT NULL,
+  `pin` int NOT NULL,
+  `credito` float NOT NULL,
+  `id_cliente` int DEFAULT NULL,
+  `id_banco` int NOT NULL,
+  `id_tarjeta` int NOT NULL,
+  PRIMARY KEY (`id_t_cliente`),
+  KEY `id_cliente` (`id_cliente`),
+  KEY `id_banco` (`id_banco`),
+  KEY `id_tarjeta` (`id_tarjeta`),
+  CONSTRAINT `tarjetas_cliente_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_clientes`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tarjetas_cliente_ibfk_2` FOREIGN KEY (`id_banco`) REFERENCES `bancos` (`id_banco`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tarjetas_cliente_ibfk_3` FOREIGN KEY (`id_tarjeta`) REFERENCES `tarjetas` (`id_tarjeta`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0105 sec)
+ MySQL  localhost:33060+ ssl  examen_1_credit_cards  SQL >
