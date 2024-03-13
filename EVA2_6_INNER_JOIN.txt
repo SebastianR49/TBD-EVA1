@@ -1,0 +1,366 @@
+MySQL Shell 8.0.35
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \c mc-- root@localhost
+Creating a session to 'root@localhost'
+Please provide the password for 'root@localhost': **********
+Save password for 'root@localhost'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8 (X protocol)
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:33060+ ssl  SQL > show databases;
++-----------------------+
+| Database              |
++-----------------------+
+| agencia               |
+| examen_1              |
+| examen_1_credit_cards |
+| information_schema    |
+| mysql                 |
+| orders                |
+| orders2               |
+| orders3               |
+| performance_schema    |
+| registro              |
+| safe                  |
+| sakila                |
+| sys                   |
+| tbd_1                 |
+| tbd_2                 |
+| world                 |
++-----------------------+
+16 rows in set (0.0066 sec)
+ MySQL  localhost:33060+ ssl  SQL > use tbd_2;
+Default schema set to `tbd_2`.
+Fetching global names, object names from `tbd_2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > show tables;
++-----------------+
+| Tables_in_tbd_2 |
++-----------------+
+| clientes        |
+| direcciones     |
+| tablaa          |
+| tablab          |
++-----------------+
+4 rows in set (0.0018 sec)
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > show * from tablaa;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* from tablaa' at line 1
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > select * from tablaa;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
++----+--------+
+4 rows in set (0.0194 sec)
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > select * from tablab;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
+|  4 | A      |
+|  5 | B      |
++----+--------+
+5 rows in set (0.0122 sec)
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > select id, nombre from tablaa intersect select id, nombre from tablab;
+Empty set (0.0020 sec)
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > select * from tablaa a inner join tablab;
++----+--------+----+--------+
+| id | nombre | id | nombre |
++----+--------+----+--------+
+|  4 | D      |  1 | X      |
+|  3 | C      |  1 | X      |
+|  2 | B      |  1 | X      |
+|  1 | A      |  1 | X      |
+|  4 | D      |  2 | Y      |
+|  3 | C      |  2 | Y      |
+|  2 | B      |  2 | Y      |
+|  1 | A      |  2 | Y      |
+|  4 | D      |  3 | Z      |
+|  3 | C      |  3 | Z      |
+|  2 | B      |  3 | Z      |
+|  1 | A      |  3 | Z      |
+|  4 | D      |  4 | A      |
+|  3 | C      |  4 | A      |
+|  2 | B      |  4 | A      |
+|  1 | A      |  4 | A      |
+|  4 | D      |  5 | B      |
+|  3 | C      |  5 | B      |
+|  2 | B      |  5 | B      |
+|  1 | A      |  5 | B      |
++----+--------+----+--------+
+20 rows in set (0.0009 sec)
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > select * from tablaa a inner join tablab on a.tabla b.tabla;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'b.tabla' at line 1
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > select * from tablaa a inner join tablab on a.tabla b.tablab;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'b.tablab' at line 1
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > select * from tablaa a inner join tablab b on a.tabla = b.tabla;
+ERROR: 1054: Unknown column 'a.tabla' in 'on clause'
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > select * from tablaa a inner join tablab b on a.id = b.id;
++----+--------+----+--------+
+| id | nombre | id | nombre |
++----+--------+----+--------+
+|  1 | A      |  1 | X      |
+|  2 | B      |  2 | Y      |
+|  3 | C      |  3 | Z      |
+|  4 | D      |  4 | A      |
++----+--------+----+--------+
+4 rows in set (0.0014 sec)
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > select * from tablaa a inner join tablab b on a.nombre = b.nombre;
++----+--------+----+--------+
+| id | nombre | id | nombre |
++----+--------+----+--------+
+|  1 | A      |  4 | A      |
+|  2 | B      |  5 | B      |
++----+--------+----+--------+
+2 rows in set (0.0014 sec)
+ MySQL  localhost:33060+ ssl  tbd_2  SQL > use sakila;
+Default schema set to `sakila`.
+Fetching global names, object names from `sakila` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  sakila  SQL > desc city
+                                         -> ;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| city_id     | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| city        | varchar(50)       | NO   |     | NULL              |                                               |
+| country_id  | smallint unsigned | NO   | MUL | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+4 rows in set (0.0033 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > desc country;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| country_id  | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| country     | varchar(50)       | NO   |     | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+3 rows in set (0.0029 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select * from rental limit 10;
++-----------+---------------------+--------------+-------------+---------------------+----------+---------------------+
+| rental_id | rental_date         | inventory_id | customer_id | return_date         | staff_id | last_update         |
++-----------+---------------------+--------------+-------------+---------------------+----------+---------------------+
+|         1 | 2005-05-24 22:53:30 |          367 |         130 | 2005-05-26 22:04:30 |        1 | 2006-02-15 21:30:53 |
+|         2 | 2005-05-24 22:54:33 |         1525 |         459 | 2005-05-28 19:40:33 |        1 | 2006-02-15 21:30:53 |
+|         3 | 2005-05-24 23:03:39 |         1711 |         408 | 2005-06-01 22:12:39 |        1 | 2006-02-15 21:30:53 |
+|         4 | 2005-05-24 23:04:41 |         2452 |         333 | 2005-06-03 01:43:41 |        2 | 2006-02-15 21:30:53 |
+|         5 | 2005-05-24 23:05:21 |         2079 |         222 | 2005-06-02 04:33:21 |        1 | 2006-02-15 21:30:53 |
+|         6 | 2005-05-24 23:08:07 |         2792 |         549 | 2005-05-27 01:32:07 |        1 | 2006-02-15 21:30:53 |
+|         7 | 2005-05-24 23:11:53 |         3995 |         269 | 2005-05-29 20:34:53 |        2 | 2006-02-15 21:30:53 |
+|         8 | 2005-05-24 23:31:46 |         2346 |         239 | 2005-05-27 23:33:46 |        2 | 2006-02-15 21:30:53 |
+|         9 | 2005-05-25 00:00:40 |         2580 |         126 | 2005-05-28 00:22:40 |        1 | 2006-02-15 21:30:53 |
+|        10 | 2005-05-25 00:02:21 |         1824 |         399 | 2005-05-31 22:44:21 |        2 | 2006-02-15 21:30:53 |
++-----------+---------------------+--------------+-------------+---------------------+----------+---------------------+
+10 rows in set (0.0234 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select a.rental_date,
+                                         -> a.return_date, b.first_name, b.last_name from rental a inner join customer b on a.customer_id = b.customer_id limit 20;
++---------------------+---------------------+------------+-----------+
+| rental_date         | return_date         | first_name | last_name |
++---------------------+---------------------+------------+-----------+
+| 2005-05-25 11:30:37 | 2005-06-03 12:00:37 | MARY       | SMITH     |
+| 2005-05-28 10:35:23 | 2005-06-03 06:32:23 | MARY       | SMITH     |
+| 2005-06-15 00:54:12 | 2005-06-23 02:42:12 | MARY       | SMITH     |
+| 2005-06-15 18:02:53 | 2005-06-19 15:54:53 | MARY       | SMITH     |
+| 2005-06-15 21:08:46 | 2005-06-25 02:26:46 | MARY       | SMITH     |
+| 2005-06-16 15:18:57 | 2005-06-17 21:05:57 | MARY       | SMITH     |
+| 2005-06-18 08:41:48 | 2005-06-22 03:36:48 | MARY       | SMITH     |
+| 2005-06-18 13:33:59 | 2005-06-19 17:40:59 | MARY       | SMITH     |
+| 2005-06-21 06:24:45 | 2005-06-28 03:28:45 | MARY       | SMITH     |
+| 2005-07-08 03:17:05 | 2005-07-14 01:19:05 | MARY       | SMITH     |
+| 2005-07-08 07:33:56 | 2005-07-12 13:25:56 | MARY       | SMITH     |
+| 2005-07-09 13:24:07 | 2005-07-14 14:01:07 | MARY       | SMITH     |
+| 2005-07-09 16:38:01 | 2005-07-13 18:02:01 | MARY       | SMITH     |
+| 2005-07-11 10:13:46 | 2005-07-19 13:15:46 | MARY       | SMITH     |
+| 2005-07-27 11:31:22 | 2005-07-31 06:50:22 | MARY       | SMITH     |
+| 2005-07-28 09:04:45 | 2005-07-30 12:37:45 | MARY       | SMITH     |
+| 2005-07-28 16:18:23 | 2005-07-30 17:56:23 | MARY       | SMITH     |
+| 2005-07-28 17:33:39 | 2005-07-29 20:17:39 | MARY       | SMITH     |
+| 2005-07-28 19:20:07 | 2005-07-29 22:54:07 | MARY       | SMITH     |
+| 2005-07-29 03:58:49 | 2005-08-01 05:16:49 | MARY       | SMITH     |
++---------------------+---------------------+------------+-----------+
+20 rows in set (0.0312 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select a.rental_date, a.return_date, b.first_name, b.last_name from rental a inner join customer b on a.customer_id = b.customer_id where a.customer_id = 333;
++---------------------+---------------------+------------+-----------+
+| rental_date         | return_date         | first_name | last_name |
++---------------------+---------------------+------------+-----------+
+| 2005-05-24 23:04:41 | 2005-06-03 01:43:41 | ANDREW     | PURDY     |
+| 2005-06-16 10:18:59 | 2005-06-22 14:45:59 | ANDREW     | PURDY     |
+| 2005-06-17 22:50:00 | 2005-06-26 18:40:00 | ANDREW     | PURDY     |
+| 2005-06-20 04:47:39 | 2005-06-25 23:16:39 | ANDREW     | PURDY     |
+| 2005-06-20 17:40:12 | 2005-06-24 17:09:12 | ANDREW     | PURDY     |
+| 2005-07-09 02:39:47 | 2005-07-10 07:45:47 | ANDREW     | PURDY     |
+| 2005-07-10 06:58:21 | 2005-07-18 04:19:21 | ANDREW     | PURDY     |
+| 2005-07-10 20:02:42 | 2005-07-11 20:02:42 | ANDREW     | PURDY     |
+| 2005-07-11 16:12:11 | 2005-07-17 20:19:11 | ANDREW     | PURDY     |
+| 2005-07-26 23:02:57 | 2005-07-28 04:48:57 | ANDREW     | PURDY     |
+| 2005-07-27 00:02:41 | 2005-07-28 00:53:41 | ANDREW     | PURDY     |
+| 2005-07-27 04:12:14 | 2005-08-05 00:44:14 | ANDREW     | PURDY     |
+| 2005-07-27 10:30:41 | 2005-07-30 05:44:41 | ANDREW     | PURDY     |
+| 2005-07-29 17:45:45 | 2005-08-01 13:53:45 | ANDREW     | PURDY     |
+| 2005-07-30 10:39:10 | 2005-08-04 07:17:10 | ANDREW     | PURDY     |
+| 2005-07-30 18:03:13 | 2005-08-08 23:57:13 | ANDREW     | PURDY     |
+| 2005-07-31 18:46:46 | 2005-08-04 20:33:46 | ANDREW     | PURDY     |
+| 2005-07-31 19:24:55 | 2005-08-03 22:51:55 | ANDREW     | PURDY     |
+| 2005-08-01 23:46:58 | 2005-08-09 19:42:58 | ANDREW     | PURDY     |
+| 2005-08-18 10:24:17 | 2005-08-27 14:22:17 | ANDREW     | PURDY     |
+| 2005-08-18 19:10:10 | 2005-08-22 20:30:10 | ANDREW     | PURDY     |
+| 2005-08-20 05:22:06 | 2005-08-28 02:33:06 | ANDREW     | PURDY     |
+| 2005-08-20 09:35:20 | 2005-08-21 05:29:20 | ANDREW     | PURDY     |
+| 2005-08-20 22:22:59 | 2005-08-25 16:58:59 | ANDREW     | PURDY     |
+| 2005-08-21 22:35:33 | 2005-08-26 17:49:33 | ANDREW     | PURDY     |
+| 2005-08-22 18:05:21 | 2005-08-23 18:06:21 | ANDREW     | PURDY     |
+| 2005-08-22 19:59:42 | 2005-08-24 15:03:42 | ANDREW     | PURDY     |
++---------------------+---------------------+------------+-----------+
+27 rows in set (0.0150 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > desc film_actor;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| actor_id    | smallint unsigned | NO   | PRI | NULL              |                                               |
+| film_id     | smallint unsigned | NO   | PRI | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+3 rows in set (0.0048 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select count(*) film;
++------+
+| film |
++------+
+|    1 |
++------+
+1 row in set (0.0008 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select count(*) from film;
++----------+
+| count(*) |
++----------+
+|     1000 |
++----------+
+1 row in set (0.0317 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select c.title, b.first_name, b.last_name
+                                         -> from film_actor a
+                                         -> inner join actor b on a.actor_id = b.actor_id
+                                         -> inner join film c on a.film_id = c.film_id
+                                         -> limit 50;
++-----------------------+------------+-----------+
+| title                 | first_name | last_name |
++-----------------------+------------+-----------+
+| ACADEMY DINOSAUR      | PENELOPE   | GUINESS   |
+| ANACONDA CONFESSIONS  | PENELOPE   | GUINESS   |
+| ANGELS LIFE           | PENELOPE   | GUINESS   |
+| BULWORTH COMMANDMENTS | PENELOPE   | GUINESS   |
+| CHEAPER CLYDE         | PENELOPE   | GUINESS   |
+| COLOR PHILADELPHIA    | PENELOPE   | GUINESS   |
+| ELEPHANT TROJAN       | PENELOPE   | GUINESS   |
+| GLEAMING JAWBREAKER   | PENELOPE   | GUINESS   |
+| HUMAN GRAFFITI        | PENELOPE   | GUINESS   |
+| KING EVOLUTION        | PENELOPE   | GUINESS   |
+| LADY STAGE            | PENELOPE   | GUINESS   |
+| LANGUAGE COWBOY       | PENELOPE   | GUINESS   |
+| MULHOLLAND BEAST      | PENELOPE   | GUINESS   |
+| OKLAHOMA JUMANJI      | PENELOPE   | GUINESS   |
+| RULES HUMAN           | PENELOPE   | GUINESS   |
+| SPLASH GUMP           | PENELOPE   | GUINESS   |
+| VERTIGO NORTHWEST     | PENELOPE   | GUINESS   |
+| WESTWARD SEABISCUIT   | PENELOPE   | GUINESS   |
+| WIZARD COLDBLOODED    | PENELOPE   | GUINESS   |
+| ADAPTATION HOLES      | NICK       | WAHLBERG  |
+| APACHE DIVINE         | NICK       | WAHLBERG  |
+| BABY HALL             | NICK       | WAHLBERG  |
+| BULL SHAWSHANK        | NICK       | WAHLBERG  |
+| CHAINSAW UPTOWN       | NICK       | WAHLBERG  |
+| CHISUM BEHAVIOR       | NICK       | WAHLBERG  |
+| DESTINY SATURDAY      | NICK       | WAHLBERG  |
+| DRACULA CRYSTAL       | NICK       | WAHLBERG  |
+| FIGHT JAWBREAKER      | NICK       | WAHLBERG  |
+| FLASH WARS            | NICK       | WAHLBERG  |
+| GILBERT PELICAN       | NICK       | WAHLBERG  |
+| GOODFELLAS SALUTE     | NICK       | WAHLBERG  |
+| HAPPINESS UNITED      | NICK       | WAHLBERG  |
+| INDIAN LOVE           | NICK       | WAHLBERG  |
+| JEKYLL FROGMEN        | NICK       | WAHLBERG  |
+| JERSEY SASSY          | NICK       | WAHLBERG  |
+| LIAISONS SWEET        | NICK       | WAHLBERG  |
+| LUCKY FLYING          | NICK       | WAHLBERG  |
+| MAGUIRE APACHE        | NICK       | WAHLBERG  |
+| MALLRATS UNITED       | NICK       | WAHLBERG  |
+| MASK PEACH            | NICK       | WAHLBERG  |
+| ROOF CHAMPION         | NICK       | WAHLBERG  |
+| RUSHMORE MERMAID      | NICK       | WAHLBERG  |
+| SMILE EARRING         | NICK       | WAHLBERG  |
+| WARDROBE PHANTOM      | NICK       | WAHLBERG  |
+| ALONE TRIP            | ED         | CHASE     |
+| ARMY FLINTSTONES      | ED         | CHASE     |
+| ARTIST COLDBLOODED    | ED         | CHASE     |
+| BOONDOCK BALLROOM     | ED         | CHASE     |
+| CADDYSHACK JEDI       | ED         | CHASE     |
+| COWBOY DOOM           | ED         | CHASE     |
++-----------------------+------------+-----------+
+50 rows in set (0.0326 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select c.title, b.first_name, b.last_name from film_actor a inner join actor b on a.actor_id = b.actor_id inner join film c on a.film_id = c.film_id order by c.title limit 50;
++------------------+------------+-----------+
+| title            | first_name | last_name |
++------------------+------------+-----------+
+| ACADEMY DINOSAUR | PENELOPE   | GUINESS   |
+| ACADEMY DINOSAUR | CHRISTIAN  | GABLE     |
+| ACADEMY DINOSAUR | LUCILLE    | TRACY     |
+| ACADEMY DINOSAUR | SANDRA     | PECK      |
+| ACADEMY DINOSAUR | JOHNNY     | CAGE      |
+| ACADEMY DINOSAUR | MENA       | TEMPLE    |
+| ACADEMY DINOSAUR | WARREN     | NOLTE     |
+| ACADEMY DINOSAUR | OPRAH      | KILMER    |
+| ACADEMY DINOSAUR | ROCK       | DUKAKIS   |
+| ACADEMY DINOSAUR | MARY       | KEITEL    |
+| ACE GOLDFINGER   | BOB        | FAWCETT   |
+| ACE GOLDFINGER   | MINNIE     | ZELLWEGER |
+| ACE GOLDFINGER   | SEAN       | GUINESS   |
+| ACE GOLDFINGER   | CHRIS      | DEPP      |
+| ADAPTATION HOLES | NICK       | WAHLBERG  |
+| ADAPTATION HOLES | BOB        | FAWCETT   |
+| ADAPTATION HOLES | CAMERON    | STREEP    |
+| ADAPTATION HOLES | RAY        | JOHANSSON |
+| ADAPTATION HOLES | JULIANNE   | DENCH     |
+| AFFAIR PREJUDICE | JODIE      | DEGENERES |
+| AFFAIR PREJUDICE | SCARLETT   | DAMON     |
+| AFFAIR PREJUDICE | KENNETH    | PESCI     |
+| AFFAIR PREJUDICE | FAY        | WINSLET   |
+| AFFAIR PREJUDICE | OPRAH      | KILMER    |
+| AFRICAN EGG      | GARY       | PHOENIX   |
+| AFRICAN EGG      | DUSTIN     | TAUTOU    |
+| AFRICAN EGG      | MATTHEW    | LEIGH     |
+| AFRICAN EGG      | MATTHEW    | CARREY    |
+| AFRICAN EGG      | THORA      | TEMPLE    |
+| AGENT TRUMAN     | KIRSTEN    | PALTROW   |
+| AGENT TRUMAN     | SANDRA     | KILMER    |
+| AGENT TRUMAN     | JAYNE      | NEESON    |
+| AGENT TRUMAN     | WARREN     | NOLTE     |
+| AGENT TRUMAN     | MORGAN     | WILLIAMS  |
+| AGENT TRUMAN     | KENNETH    | HOFFMAN   |
+| AGENT TRUMAN     | REESE      | WEST      |
+| AIRPLANE SIERRA  | JIM        | MOSTEL    |
+| AIRPLANE SIERRA  | RICHARD    | PENN      |
+| AIRPLANE SIERRA  | OPRAH      | KILMER    |
+| AIRPLANE SIERRA  | MENA       | HOPPER    |
+| AIRPLANE SIERRA  | MICHAEL    | BOLGER    |
+| AIRPORT POLLOCK  | FAY        | KILMER    |
+| AIRPORT POLLOCK  | GENE       | WILLIS    |
+| AIRPORT POLLOCK  | SUSAN      | DAVIS     |
+| AIRPORT POLLOCK  | LUCILLE    | DEE       |
+| ALABAMA DEVIL    | CHRISTIAN  | GABLE     |
+| ALABAMA DEVIL    | ELVIS      | MARX      |
+| ALABAMA DEVIL    | RIP        | CRAWFORD  |
+| ALABAMA DEVIL    | MENA       | TEMPLE    |
+| ALABAMA DEVIL    | RIP        | WINSLET   |
++------------------+------------+-----------+
+50 rows in set (0.0062 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL >
