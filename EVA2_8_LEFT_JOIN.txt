@@ -1,0 +1,471 @@
+MySQL Shell 8.0.35
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \c mc-- root@localhost
+Creating a session to 'root@localhost'
+Please provide the password for 'root@localhost': **********
+Save password for 'root@localhost'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8 (X protocol)
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:33060+ ssl  SQL > use company;
+Default schema set to `company`.
+Fetching global names, object names from `company` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  company  SQL > show tables;
++-------------------+
+| Tables_in_company |
++-------------------+
+| address           |
+| employee          |
+| projects          |
++-------------------+
+3 rows in set (0.0017 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > select * from proyects;
+ERROR: 1146: Table 'company.proyects' doesn't exist
+ MySQL  localhost:33060+ ssl  company  SQL > select * from projects;
++-----------+------------------------------------------------------+------------+---------------------+---------------------+
+| ProjectId | ProjectName                                          | EmployeeId | StartDate           | EndDate             |
++-----------+------------------------------------------------------+------------+---------------------+---------------------+
+|        34 | Develop Ecommerse Website from scratch               |       1003 | 2024-03-14 17:15:57 | 2024-04-13 17:15:57 |
+|        35 | WordPress Website for our company                    |       1002 | 2024-03-14 17:15:57 | 2024-04-28 17:15:57 |
+|        36 | Manage our Company Servers                           |       1007 | 2024-03-14 17:15:57 | 2024-04-28 17:15:57 |
+|        37 | Hosting account is not working                       |       1009 | 2024-03-14 17:15:57 | 2024-03-21 17:15:57 |
+|        38 | MySQL database from my desktop application           |       1010 | 2024-03-14 17:15:57 | 2024-03-29 17:15:57 |
+|        39 | Develop new WordPress plugin for my business website |       NULL | 2024-03-14 17:15:57 | 2024-03-24 17:15:57 |
+|        40 | Migrate web application and database to new server   |       NULL | 2024-03-14 17:15:57 | 2024-03-19 17:15:57 |
+|        41 | Android Application development                      |       1004 | 2024-03-14 17:15:57 | 2024-04-13 17:15:57 |
+|        42 | Hosting account is not working                       |       1001 | 2024-03-14 17:15:57 | 2024-03-21 17:15:57 |
+|        43 | MySQL database from my desktop application           |       1008 | 2024-03-14 17:15:57 | 2024-03-29 17:15:57 |
+|        44 | Develop new WordPress plugin for my business website |       NULL | 2024-03-14 17:15:57 | 2024-03-24 17:15:57 |
++-----------+------------------------------------------------------+------------+---------------------+---------------------+
+11 rows in set (0.0239 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > desc projects;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| ProjectId   | int          | NO   | PRI | NULL    | auto_increment |
+| ProjectName | varchar(200) | NO   |     | NULL    |                |
+| EmployeeId  | int          | YES  | MUL | NULL    |                |
+| StartDate   | datetime     | YES  |     | NULL    |                |
+| EndDate     | datetime     | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.0023 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > desc employee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| EmployeeId | int         | NO   | PRI | NULL    |       |
+| FullName   | varchar(50) | NO   |     | NULL    |       |
+| Technology | varchar(50) | NO   |     | NULL    |       |
+| Salary     | float       | NO   |     | NULL    |       |
+| Gender     | varchar(50) | NO   |     | NULL    |       |
+| Age        | int         | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.0028 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > select a.projectname, b.fullname
+                                          -> from projects a
+                                          -> left join employee b
+                                          -> on a.employeeid = b.employeeid;
++------------------------------------------------------+-------------------+
+| projectname                                          | fullname          |
++------------------------------------------------------+-------------------+
+| Develop Ecommerse Website from scratch               | James Brown       |
+| WordPress Website for our company                    | Mary Smith        |
+| Manage our Company Servers                           | Priyanla Dewangan |
+| Hosting account is not working                       | Doe Nut           |
+| MySQL database from my desktop application           | Mary Juana        |
+| Develop new WordPress plugin for my business website | NULL              |
+| Migrate web application and database to new server   | NULL              |
+| Android Application development                      | Mike Walker       |
+| Hosting account is not working                       | John Doe          |
+| MySQL database from my desktop application           | Arturo de Jesus   |
+| Develop new WordPress plugin for my business website | NULL              |
++------------------------------------------------------+-------------------+
+11 rows in set (0.0223 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > select a.projectname, b.fullname from projects a inner join employee b on a.employeeid = b.employeeid;
++--------------------------------------------+-------------------+
+| projectname                                | fullname          |
++--------------------------------------------+-------------------+
+| Hosting account is not working             | John Doe          |
+| WordPress Website for our company          | Mary Smith        |
+| Develop Ecommerse Website from scratch     | James Brown       |
+| Android Application development            | Mike Walker       |
+| Manage our Company Servers                 | Priyanla Dewangan |
+| MySQL database from my desktop application | Arturo de Jesus   |
+| Hosting account is not working             | Doe Nut           |
+| MySQL database from my desktop application | Mary Juana        |
++--------------------------------------------+-------------------+
+8 rows in set (0.0056 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > select a.projectname, b.fullname from projects a inner join employee b on a.employeeid = b.employeeid where employeeid is null;
+ERROR: 1052: Column 'employeeid' in where clause is ambiguous
+ MySQL  localhost:33060+ ssl  company  SQL > select a.projectname, b.fullname from projects a inner join employee b on a.employeeid = b.employeeid where a.employeeid is null;
+Empty set (0.0008 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > select a.projectname, b.fullname from projects a left join employee b on a.employeeid = b.employeeid where a.employeeid is null;
++------------------------------------------------------+----------+
+| projectname                                          | fullname |
++------------------------------------------------------+----------+
+| Develop new WordPress plugin for my business website | NULL     |
+| Migrate web application and database to new server   | NULL     |
+| Develop new WordPress plugin for my business website | NULL     |
++------------------------------------------------------+----------+
+3 rows in set (0.0008 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > select a.projectname, b.fullname from projects a left join employee b on a.employeeid = b.employeeid where a.employeeid is not null;
++--------------------------------------------+-------------------+
+| projectname                                | fullname          |
++--------------------------------------------+-------------------+
+| Hosting account is not working             | John Doe          |
+| WordPress Website for our company          | Mary Smith        |
+| Develop Ecommerse Website from scratch     | James Brown       |
+| Android Application development            | Mike Walker       |
+| Manage our Company Servers                 | Priyanla Dewangan |
+| MySQL database from my desktop application | Arturo de Jesus   |
+| Hosting account is not working             | Doe Nut           |
+| MySQL database from my desktop application | Mary Juana        |
++--------------------------------------------+-------------------+
+8 rows in set (0.0012 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > select a.fullname, b.projectname from employee a left join projects b
+                                          -> on a.employeeid = b.employeeid;
++-------------------+--------------------------------------------+
+| fullname          | projectname                                |
++-------------------+--------------------------------------------+
+| John Doe          | Hosting account is not working             |
+| Mary Smith        | WordPress Website for our company          |
+| James Brown       | Develop Ecommerse Website from scratch     |
+| Mike Walker       | Android Application development            |
+| Linda Jones       | NULL                                       |
+| Anurag Mohanty    | NULL                                       |
+| Priyanla Dewangan | Manage our Company Servers                 |
+| Arturo de Jesus   | MySQL database from my desktop application |
+| Doe Nut           | Hosting account is not working             |
+| Mary Juana        | MySQL database from my desktop application |
++-------------------+--------------------------------------------+
+10 rows in set (0.0013 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > select * from emlpoyee;
+ERROR: 1146: Table 'company.emlpoyee' doesn't exist
+ MySQL  localhost:33060+ ssl  company  SQL > select * from employee;
++------------+-------------------+------------+--------+--------+-----+
+| EmployeeId | FullName          | Technology | Salary | Gender | Age |
++------------+-------------------+------------+--------+--------+-----+
+|       1001 | John Doe          | Java       |  35000 | Male   |  25 |
+|       1002 | Mary Smith        | Java       |  45000 | Female |  27 |
+|       1003 | James Brown       | Java       |  50000 | Male   |  28 |
+|       1004 | Mike Walker       | .NET       |  50000 | Male   |  28 |
+|       1005 | Linda Jones       | .NET       |  75000 | Female |  26 |
+|       1006 | Anurag Mohanty    | .NET       |  35000 | Male   |  25 |
+|       1007 | Priyanla Dewangan | .NET       |  45000 | Female |  27 |
+|       1008 | Arturo de Jesus   | Java       |  64000 | Male   |  80 |
+|       1009 | Doe Nut           | Java       |  55000 | Male   |  36 |
+|       1010 | Mary Juana        | Java       |  49000 | Female |  55 |
++------------+-------------------+------------+--------+--------+-----+
+10 rows in set (0.0008 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > insert into projects(projectname, employeeid)
+                                          -> values("Accomodate", 1010),
+                                          -> ("Delifresh", 1003);
+Query OK, 2 rows affected (0.0152 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  company  SQL > select a.fullname, b.projectname from employee a left join projects b on a.employeeid = b.employeeid;
++-------------------+--------------------------------------------+
+| fullname          | projectname                                |
++-------------------+--------------------------------------------+
+| John Doe          | Hosting account is not working             |
+| Mary Smith        | WordPress Website for our company          |
+| James Brown       | Develop Ecommerse Website from scratch     |
+| James Brown       | Delifresh                                  |
+| Mike Walker       | Android Application development            |
+| Linda Jones       | NULL                                       |
+| Anurag Mohanty    | NULL                                       |
+| Priyanla Dewangan | Manage our Company Servers                 |
+| Arturo de Jesus   | MySQL database from my desktop application |
+| Doe Nut           | Hosting account is not working             |
+| Mary Juana        | MySQL database from my desktop application |
+| Mary Juana        | Accomodate                                 |
++-------------------+--------------------------------------------+
+12 rows in set (0.0011 sec)
+ MySQL  localhost:33060+ ssl  company  SQL > use sakila;
+Default schema set to `sakila`.
+Fetching global names, object names from `sakila` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0020 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select count(*) from payment;
++----------+
+| count(*) |
++----------+
+|    16044 |
++----------+
+1 row in set (0.0589 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > desc payment;
++--------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field        | Type              | Null | Key | Default           | Extra                                         |
++--------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| payment_id   | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| customer_id  | smallint unsigned | NO   | MUL | NULL              |                                               |
+| staff_id     | tinyint unsigned  | NO   | MUL | NULL              |                                               |
+| rental_id    | int               | YES  | MUL | NULL              |                                               |
+| amount       | decimal(5,2)      | NO   |     | NULL              |                                               |
+| payment_date | datetime          | NO   |     | NULL              |                                               |
+| last_update  | timestamp         | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++--------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+7 rows in set (0.0024 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select count(a.customer_id, b.rental_id) from customer_list a left join projects b on a.customer_id = b.rental_id;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', b.rental_id) from customer_list a left join projects b on a.customer_id = b.re' at line 1
+ MySQL  localhost:33060+ ssl  sakila  SQL > select a.first_name, a.last_name, b.amount
+                                         -> from customer;
+ERROR: 1054: Unknown column 'a.first_name' in 'field list'
+ MySQL  localhost:33060+ ssl  sakila  SQL > select a.first_name, a.last_name, b.amount from customer a left join payment b on a.customer_id = b.customer_id where b.customer_id is null;
+Empty set (0.0637 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select count(a.first_name, a.last_name, b.amount) from customer a left join payment b on a.customer_id = b.customer_id where b.customer_id is null;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', a.last_name, b.amount) from customer a left join payment b on a.customer_id = ' at line 1
+ MySQL  localhost:33060+ ssl  sakila  SQL > select a.first_name, a.last_name, b.amount from customer a left join payment b on a.customer_id = b.customer_id where b.customer_id limit 100;
++------------+-----------+--------+
+| first_name | last_name | amount |
++------------+-----------+--------+
+| MARY       | SMITH     |   2.99 |
+| MARY       | SMITH     |   0.99 |
+| MARY       | SMITH     |   5.99 |
+| MARY       | SMITH     |   0.99 |
+| MARY       | SMITH     |   9.99 |
+| MARY       | SMITH     |   4.99 |
+| MARY       | SMITH     |   4.99 |
+| MARY       | SMITH     |   0.99 |
+| MARY       | SMITH     |   3.99 |
+| MARY       | SMITH     |   5.99 |
+| MARY       | SMITH     |   5.99 |
+| MARY       | SMITH     |   4.99 |
+| MARY       | SMITH     |   4.99 |
+| MARY       | SMITH     |   7.99 |
+| MARY       | SMITH     |   2.99 |
+| MARY       | SMITH     |   4.99 |
+| MARY       | SMITH     |   4.99 |
+| MARY       | SMITH     |   0.99 |
+| MARY       | SMITH     |   0.99 |
+| MARY       | SMITH     |   2.99 |
+| MARY       | SMITH     |   2.99 |
+| MARY       | SMITH     |   4.99 |
+| MARY       | SMITH     |   3.99 |
+| MARY       | SMITH     |   0.99 |
+| MARY       | SMITH     |   4.99 |
+| MARY       | SMITH     |   0.99 |
+| MARY       | SMITH     |   0.99 |
+| MARY       | SMITH     |   2.99 |
+| MARY       | SMITH     |   0.99 |
+| MARY       | SMITH     |   1.99 |
+| MARY       | SMITH     |   2.99 |
+| MARY       | SMITH     |   5.99 |
+| PATRICIA   | JOHNSON   |   4.99 |
+| PATRICIA   | JOHNSON   |   2.99 |
+| PATRICIA   | JOHNSON   |   2.99 |
+| PATRICIA   | JOHNSON   |   6.99 |
+| PATRICIA   | JOHNSON   |   4.99 |
+| PATRICIA   | JOHNSON   |   5.99 |
+| PATRICIA   | JOHNSON   |   5.99 |
+| PATRICIA   | JOHNSON   |   5.99 |
+| PATRICIA   | JOHNSON   |   2.99 |
+| PATRICIA   | JOHNSON   |   5.99 |
+| PATRICIA   | JOHNSON   |   4.99 |
+| PATRICIA   | JOHNSON   |  10.99 |
+| PATRICIA   | JOHNSON   |   0.99 |
+| PATRICIA   | JOHNSON   |   6.99 |
+| PATRICIA   | JOHNSON   |   6.99 |
+| PATRICIA   | JOHNSON   |   2.99 |
+| PATRICIA   | JOHNSON   |   0.99 |
+| PATRICIA   | JOHNSON   |   0.99 |
+| PATRICIA   | JOHNSON   |   5.99 |
+| PATRICIA   | JOHNSON   |   6.99 |
+| PATRICIA   | JOHNSON   |   2.99 |
+| PATRICIA   | JOHNSON   |   2.99 |
+| PATRICIA   | JOHNSON   |   2.99 |
+| PATRICIA   | JOHNSON   |   4.99 |
+| PATRICIA   | JOHNSON   |   5.99 |
+| PATRICIA   | JOHNSON   |   4.99 |
+| PATRICIA   | JOHNSON   |   4.99 |
+| LINDA      | WILLIAMS  |   1.99 |
+| LINDA      | WILLIAMS  |   2.99 |
+| LINDA      | WILLIAMS  |   8.99 |
+| LINDA      | WILLIAMS  |   6.99 |
+| LINDA      | WILLIAMS  |   6.99 |
+| LINDA      | WILLIAMS  |   2.99 |
+| LINDA      | WILLIAMS  |   4.99 |
+| LINDA      | WILLIAMS  |   4.99 |
+| LINDA      | WILLIAMS  |   5.99 |
+| LINDA      | WILLIAMS  |  10.99 |
+| LINDA      | WILLIAMS  |   7.99 |
+| LINDA      | WILLIAMS  |   6.99 |
+| LINDA      | WILLIAMS  |   4.99 |
+| LINDA      | WILLIAMS  |   4.99 |
+| LINDA      | WILLIAMS  |   2.99 |
+| LINDA      | WILLIAMS  |   1.99 |
+| LINDA      | WILLIAMS  |   3.99 |
+| LINDA      | WILLIAMS  |   2.99 |
+| LINDA      | WILLIAMS  |   4.99 |
+| LINDA      | WILLIAMS  |   5.99 |
+| LINDA      | WILLIAMS  |   4.99 |
+| LINDA      | WILLIAMS  |   8.99 |
+| LINDA      | WILLIAMS  |   2.99 |
+| LINDA      | WILLIAMS  |   8.99 |
+| LINDA      | WILLIAMS  |   0.99 |
+| LINDA      | WILLIAMS  |   2.99 |
+| BARBARA    | JONES     |   4.99 |
+| BARBARA    | JONES     |   0.99 |
+| BARBARA    | JONES     |   2.99 |
+| BARBARA    | JONES     |   0.99 |
+| BARBARA    | JONES     |   0.99 |
+| BARBARA    | JONES     |   5.99 |
+| BARBARA    | JONES     |   2.99 |
+| BARBARA    | JONES     |   2.99 |
+| BARBARA    | JONES     |   3.99 |
+| BARBARA    | JONES     |   5.99 |
+| BARBARA    | JONES     |   5.99 |
+| BARBARA    | JONES     |   0.99 |
+| BARBARA    | JONES     |   2.99 |
+| BARBARA    | JONES     |   4.99 |
+| BARBARA    | JONES     |   2.99 |
++------------+-----------+--------+
+100 rows in set (0.0015 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL > select a.first_name, a.last_name, b.amount from customer a left join payment b on a.customer_id = b.customer_id where b.customer_id group by first_name, last_name limit 100;
+ERROR: 1055: Expression #3 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sakila.b.amount' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+ MySQL  localhost:33060+ ssl  sakila  SQL > select a.first_name, a.last_name, b.amount from customer a left join payment b on a.customer_id = b.customer_id where b.customer_id group by first_name limit 100;
+ERROR: 1055: Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sakila.a.last_name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+ MySQL  localhost:33060+ ssl  sakila  SQL > select a.first_name, a.last_name, b.amount from customer a left join payment b group by first_name, last_name on a.customer_id = b.customer_id where b.customer_id limit 100;
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'group by first_name, last_name on a.customer_id = b.customer_id where b.customer' at line 1
+ MySQL  localhost:33060+ ssl  sakila  SQL > select a.first_name, a.last_name, sum(b.amount) as total from customer a left join payment b on a.customer_id = b.customer_id where b.customer_id group by a.customer_id limit 100;
++------------+------------+--------+
+| first_name | last_name  | total  |
++------------+------------+--------+
+| MARY       | SMITH      | 118.68 |
+| PATRICIA   | JOHNSON    | 128.73 |
+| LINDA      | WILLIAMS   | 135.74 |
+| BARBARA    | JONES      |  81.78 |
+| ELIZABETH  | BROWN      | 144.62 |
+| JENNIFER   | DAVIS      |  93.72 |
+| MARIA      | MILLER     | 151.67 |
+| SUSAN      | WILSON     |  92.76 |
+| MARGARET   | MOORE      |  89.77 |
+| DOROTHY    | TAYLOR     |  99.75 |
+| LISA       | ANDERSON   | 106.76 |
+| NANCY      | THOMAS     | 103.72 |
+| KAREN      | JACKSON    | 131.73 |
+| BETTY      | WHITE      | 117.72 |
+| HELEN      | HARRIS     | 134.68 |
+| SANDRA     | MARTIN     | 118.72 |
+| DONNA      | THOMPSON   |  98.79 |
+| CAROL      | GARCIA     |  91.78 |
+| RUTH       | MARTINEZ   | 125.76 |
+| SHARON     | ROBINSON   | 115.70 |
+| MICHELLE   | CLARK      | 155.65 |
+| LAURA      | RODRIGUEZ  | 113.78 |
+| SARAH      | LEWIS      | 119.70 |
+| KIMBERLY   | LEE        |  95.75 |
+| DEBORAH    | WALKER     | 115.71 |
+| JESSICA    | HALL       | 152.66 |
+| SHIRLEY    | ALLEN      | 126.69 |
+| CYNTHIA    | YOUNG      | 111.68 |
+| ANGELA     | HERNANDEZ  | 140.64 |
+| MELISSA    | KING       | 123.66 |
+| BRENDA     | WRIGHT     | 104.74 |
+| AMY        | LOPEZ      | 127.71 |
+| ANNA       | HILL       |  91.79 |
+| REBECCA    | SCOTT      |  89.76 |
+| VIRGINIA   | GREEN      | 129.68 |
+| KATHLEEN   | ADAMS      |  92.73 |
+| PAMELA     | BAKER      |  95.77 |
+| MARTHA     | GONZALEZ   | 127.66 |
+| DEBRA      | NELSON     | 141.71 |
+| AMANDA     | CARTER     | 110.73 |
+| STEPHANIE  | MITCHELL   | 118.75 |
+| CAROLYN    | PEREZ      | 117.70 |
+| CHRISTINE  | ROBERTS    |  99.76 |
+| MARIE      | TURNER     | 114.74 |
+| JANET      | PHILLIPS   | 127.73 |
+| CATHERINE  | CAMPBELL   | 142.66 |
+| FRANCES    | PARKER     | 108.78 |
+| ANN        | EVANS      |  76.83 |
+| JOYCE      | EDWARDS    | 130.72 |
+| DIANE      | COLLINS    | 169.65 |
+| ALICE      | STEWART    | 138.67 |
+| JULIE      | SANCHEZ    | 107.71 |
+| HEATHER    | MORRIS     | 115.70 |
+| TERESA     | ROGERS     | 128.71 |
+| DORIS      | REED       | 100.78 |
+| GLORIA     | COOK       | 135.70 |
+| EVELYN     | MORGAN     | 114.72 |
+| JEAN       | BELL       | 115.73 |
+| CHERYL     | MURPHY     | 133.73 |
+| MILDRED    | BAILEY     |  98.75 |
+| KATHERINE  | RIVERA     |  58.86 |
+| JOAN       | COOPER     |  84.77 |
+| ASHLEY     | RICHARDSON | 112.75 |
+| JUDITH     | COX        | 100.67 |
+| ROSE       | HOWARD     | 103.78 |
+| JANICE     | WARD       | 144.66 |
+| KELLY      | TORRES     |  99.78 |
+| NICOLE     | PETERSON   |  94.78 |
+| JUDY       | GRAY       |  96.75 |
+| CHRISTINA  | RAMIREZ    |  80.82 |
+| KATHY      | JAMES      | 129.70 |
+| THERESA    | WATSON     |  99.70 |
+| BEVERLY    | BROOKS     |  97.76 |
+| DENISE     | KELLY      | 103.73 |
+| TAMMY      | SANDERS    | 155.59 |
+| IRENE      | PRICE      |  77.77 |
+| JANE       | BENNETT    | 100.72 |
+| LORI       | WOOD       | 141.69 |
+| RACHEL     | BARNES     |  84.78 |
+| MARILYN    | ROSS       | 137.70 |
+| ANDREA     | HENDERSON  |  93.78 |
+| KATHRYN    | COLEMAN    | 130.74 |
+| LOUISE     | JENKINS    | 101.75 |
+| SARA       | PERRY      | 141.67 |
+| ANNE       | POWELL     |  87.77 |
+| JACQUELINE | LONG       | 148.67 |
+| WANDA      | PATTERSON  | 145.70 |
+| BONNIE     | HUGHES     |  87.79 |
+| JULIA      | FLORES     | 134.68 |
+| RUBY       | WASHINGTON | 110.72 |
+| LOIS       | BUTLER     | 113.65 |
+| TINA       | SIMMONS    | 133.72 |
+| PHYLLIS    | FOSTER     |  91.77 |
+| NORMA      | GONZALES   |  79.79 |
+| PAULA      | BRYANT     |  77.82 |
+| DIANA      | ALEXANDER  | 105.73 |
+| ANNIE      | RUSSELL    |  58.82 |
+| LILLIAN    | GRIFFIN    | 106.75 |
+| EMILY      | DIAZ       |  91.76 |
+| ROBIN      | HAYES      | 102.76 |
++------------+------------+--------+
+100 rows in set (0.0368 sec)
+ MySQL  localhost:33060+ ssl  sakila  SQL >
